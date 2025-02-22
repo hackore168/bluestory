@@ -3,10 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
+    <title>Мои персонажи</title>
+    <style>
+        .character {
+            width: 200px;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .character:hover {
+            transform: scale(1.1);
+        }
+        .modal, .overlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 2px solid black;
+            z-index: 1000;
+            text-align: center;
+        }
+        .overlay {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
 </head>
 <body>
-    <h1>Привет, мир!</h1>
-    <p>Это мой первый сайт.</p>
+    <h2>Выбери персонажа:</h2>
+    <div id="characters"></div>
+
+    <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    <div id="modals"></div>
+
+    <script>
+        const characters = [
+            { id: "char1", name: "Имя персонажа 1", description: "Описание персонажа 1...", image: "character1.jpg" },
+            { id: "char2", name: "Имя персонажа 2", description: "Описание персонажа 2...", image: "character2.jpg" }
+        ];
+
+        const charactersContainer = document.getElementById('characters');
+        const modalsContainer = document.getElementById('modals');
+
+        characters.forEach(char => {
+            // Создаём изображение персонажа
+            const img = document.createElement('img');
+            img.src = char.image;
+            img.className = "character";
+            img.onclick = () => openModal(char.id);
+            charactersContainer.appendChild(img);
+
+            // Создаём модальное окно
+            const modal = document.createElement('div');
+            modal.className = "modal";
+            modal.id = char.id;
+            modal.innerHTML = `<h3>${char.name}</h3><p>${char.description}</p><button onclick="closeModal()">Закрыть</button>`;
+            modalsContainer.appendChild(modal);
+        });
+
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
